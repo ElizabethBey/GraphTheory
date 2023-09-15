@@ -1,0 +1,81 @@
+Graph info      directed: no    weighted: no
+Adjacency List
+1: 2; 4;
+2: 1; 3; 4;
+3: 2;
+4: 1; 2;
+Choose operation:
+1 - print adjList
+2 - print edgesList
+3 - add vertex
+4 - add edge
+5 - delete vertex
+6 - delete edge
+7 - read graph from file
+8 - print graph into file
+9 - get info about graph
+7
+Enter fileName: 1.txt
+Adjacency List
+1: 2;
+2: 1; 3; 4; 5; 6;
+3: 2; 7;
+4: 2;
+5: 2; 5; 6;
+6: 2; 5; 7;
+7: 3; 6;
+8:
+Completed
+Continue? (1/0) 1
+Choose operation:
+1 - print adjList
+2 - print edgesList
+3 - add vertex
+4 - add edge
+5 - delete vertex
+6 - delete edge
+7 - read graph from file
+8 - print graph into file
+9 - get info about graph
+6
+Enter the edge vertex vertex 3 4
+Incorrect operation: there is no such edge
+Continue? (1/0) 1
+Choose operation:
+1 - print adjList
+2 - print edgesList
+3 - add vertex
+4 - add edge
+5 - delete vertex
+6 - delete edge
+7 - read graph from file
+8 - print graph into file
+9 - get info about graph
+5
+Enter the name of vertex (int): 9
+Incorrect operation: there is no such vertex
+Continue? (1/0) 1
+Choose operation:
+1 - print adjList
+2 - print edgesList
+3 - add vertex
+4 - add edge
+5 - delete vertex
+6 - delete edge
+7 - read graph from file
+8 - print graph into file
+9 - get info about graph
+3
+Enter the name of vertex (int): 8
+Incorrect operation: vertex with such name already exists
+Continue? (1/0) 1
+Choose operation:
+1 - print adjList
+2 - print edgesList
+3 - add vertex
+4 - add edge
+5 - delete vertex
+6 - delete edge
+7 - read graph from file
+8 - print graph into file
+9 - get info about graph
