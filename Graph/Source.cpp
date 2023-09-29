@@ -52,7 +52,7 @@ int main() {
             << "3 - add vertex\n" << "4 - add edge\n"
             << "5 - delete vertex\n" << "6 - delete edge\n"
             << "7 - read graph from file\n" << "8 - print graph into file\n"
-            << "9 - get info about graph\n";
+            << "9 - get info about graph\n" << "10 - give amount of coming edges\n";
         cin >> action;
         int fir, sec, weight;
         try {
@@ -118,6 +118,12 @@ int main() {
             case 9:
                 // 9 - get info about graph
                 cout << g;
+                break;
+            case 10:
+                // 10 - give amount of coming edges
+                cout << "Enter the name of vertex (int): ";
+                cin >> fir;
+                cout << g.getStepIn(fir) << "\n";
                 break;
             default:
                 cout << "\nHave no operation with such name\n";

@@ -169,6 +169,7 @@ public:
 	void deleteEdge(int f, int s); // удаляет ребро у невзвешенного графа
 	void deleteEdge(int f, int s, int w); // удаляет ребро у взвешенного
 	void printToFile(string fileName); // печатает данные о графе в файл
+	int getStepIn(int v); // количество дуг, входящих в вершину
 
 private:
 	bool directed;

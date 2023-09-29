@@ -1,0 +1,9 @@
+﻿  Graph.cpp
+C:\Users\User\Desktop\homework3course\graphsTheory\Graph\Graph\Graph.cpp(12,21): warning C4018: <: несоответствие типов со знаком и без знака
+C:\Users\User\Desktop\homework3course\graphsTheory\Graph\Graph\Graph.cpp(132,21): warning C4018: <: несоответствие типов со знаком и без знака
+C:\Users\User\Desktop\homework3course\graphsTheory\Graph\Graph\Graph.cpp(150,22): warning C4018: <: несоответствие типов со знаком и без знака
+  Source.cpp
+C:\Users\User\Desktop\homework3course\graphsTheory\Graph\Graph\Source.cpp(13,27): warning C4018: <: несоответствие типов со знаком и без знака
+  Создание кода...
+C:\Users\User\Desktop\homework3course\graphsTheory\Graph\Graph\Graph.cpp(157): warning C4715: Graph::getStepIn: значение возвращается не при всех путях выполнения
+  Graph.vcxproj -> C:\Users\User\Desktop\homework3course\graphsTheory\Graph\Debug\Graph.exe

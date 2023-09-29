@@ -139,3 +139,20 @@ void Graph::printToFile(string fileName) {
 	out.close();
 }
 
+int Graph::getStepIn(int f) {
+	if (this->directed) {
+		if (this->vertexs.find(f) == this->vertexs.end())
+			throw OperationErr("there is no such vertex");
+
+		int k = 0;
+		for (auto it = this->adjList.begin(); it != this->adjList.end(); it++) {
+			vector<pair<int, int>> v = it->second;
+			for (int i = 0; i < v.size(); i++) {
+				if (v[i].first == f) k++;
+			}
+		}
+		return k;
+	}
+	else OperationErr("graph is not directed");
+}
+
