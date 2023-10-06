@@ -139,7 +139,7 @@ void Graph::printToFile(string fileName) {
 	out.close();
 }
 
-int Graph::getStepIn(int f) {
+int Graph::getAmountStepIn(int f) {
 	if (this->directed) {
 		if (this->vertexs.find(f) == this->vertexs.end())
 			throw OperationErr("there is no such vertex");
@@ -153,6 +153,65 @@ int Graph::getStepIn(int f) {
 		}
 		return k;
 	}
-	else OperationErr("graph is not directed");
+	else throw OperationErr("graph is not directed");
+}
+
+vector<int> Graph::getVertexStepIn(int f) {
+	if (this->directed) {
+		if (this->vertexs.find(f) == this->vertexs.end())
+			throw OperationErr("there is no such vertex");
+
+		int k = 0;
+		vector<int> stepIn;
+		for (auto it = this->adjList.begin(); it != this->adjList.end(); it++) {
+			vector<pair<int, int>> v = it->second;
+			if (it->first != f)
+				for (int i = 0; i < v.size(); i++)
+					if (v[i].first == f) {
+						stepIn.push_back(it->first);
+						break;
+					}
+		}
+		return stepIn;
+	}
+	else throw OperationErr("graph is not directed");
+}
+
+Graph Graph::makeCompleteGraph() {
+	if (this->weighted) throw OperationErr("graph is weighted");
+
+	Graph g1(this->directed, false);
+	int k = 0;
+	for (auto v : this->vertexs)
+		g1.addVertex(v);
+	
+	for (auto it1 = this->vertexs.begin(); it1 != this->vertexs.end(); ++it1) {
+		auto it2 = it1; it2++;
+		while (it2 != this->vertexs.end()) {
+			g1.addEdge(*it1, *it2);
+			if (this->directed) g1.addEdge(*it2, *it1);
+			it2++;
+		}
+	}
+	return g1;
+}
+
+Graph Graph::makeCompleteGraph(int w) {
+	if (!this->weighted) throw OperationErr("graph is not weighted");
+
+	Graph g1(this->directed, true);
+	int k = 0;
+	for (auto v : this->vertexs)
+		g1.addVertex(v);
+
+	for (auto it1 = this->vertexs.begin(); it1 != this->vertexs.end(); ++it1) {
+		auto it2 = it1; it2++;
+		while (it2 != this->vertexs.end()) {
+			g1.addEdge(*it1, *it2, w);
+			if (this->directed) g1.addEdge(*it2, *it1, w);
+			it2++;
+		}
+	}
+	return g1;
 }
 

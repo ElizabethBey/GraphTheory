@@ -169,7 +169,10 @@ public:
 	void deleteEdge(int f, int s); // удаляет ребро у невзвешенного графа
 	void deleteEdge(int f, int s, int w); // удаляет ребро у взвешенного
 	void printToFile(string fileName); // печатает данные о графе в файл
-	int getStepIn(int v); // количество дуг, входящих в вершину
+	int getAmountStepIn(int v); // количество дуг, входящих в вершину
+	vector<int> getVertexStepIn(int v); // дает список «заходящих» соседних вершин
+	Graph makeCompleteGraph(); // полный граф на основе данного невзвешенного графа
+	Graph makeCompleteGraph(int w); // полный граф на основе данного взвешенного графа
 
 private:
 	bool directed;

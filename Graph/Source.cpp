@@ -31,6 +31,12 @@ void printEdgeList(Graph g) {
     cout << endl;
 }
 
+void printVector(vector<int> v) {
+    for (int i = 0; i < v.size(); ++i)
+        cout << v[i] << " ";
+    cout << "\n";
+}
+
 int main() {
     string s = "somefile.txt";
     // cout << "Enter fileName: ";
@@ -52,7 +58,9 @@ int main() {
             << "3 - add vertex\n" << "4 - add edge\n"
             << "5 - delete vertex\n" << "6 - delete edge\n"
             << "7 - read graph from file\n" << "8 - print graph into file\n"
-            << "9 - get info about graph\n" << "10 - give amount of coming edges\n";
+            << "9 - get info about graph\n" << "10 - give amount of coming edges (task4)\n"
+            << "11 - give list of coming edges (task11)\n"
+            << "12 - get complete graph based on g (task1)\n";
         cin >> action;
         int fir, sec, weight;
         try {
@@ -123,7 +131,23 @@ int main() {
                 // 10 - give amount of coming edges
                 cout << "Enter the name of vertex (int): ";
                 cin >> fir;
-                cout << g.getStepIn(fir) << "\n";
+                cout << g.getAmountStepIn(fir) << "\n";
+                break;
+            case 11:
+                // 11 - give list of coming edges
+                cout << "Enter the name of vertex (int): ";
+                cin >> fir;
+                printVector(g.getVertexStepIn(fir));
+                break;
+            case 12:
+                // 12 - complete graph
+                if (g.isWeighted()) {
+                    cout << "weight: ";
+                    cin >> weight;
+                    printAdjList(g.makeCompleteGraph(weight));
+                }
+                else
+                    printAdjList(g.makeCompleteGraph());
                 break;
             default:
                 cout << "\nHave no operation with such name\n";
