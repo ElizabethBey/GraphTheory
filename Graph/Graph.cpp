@@ -215,3 +215,29 @@ Graph Graph::makeCompleteGraph(int w) {
 	return g1;
 }
 
+bool Graph::mDFS(int u1, int u2, int v, bool* visited, vector<int>& ans) {
+	visited[u1] = true;
+	ans.push_back(u1);
+	if (u1 == u2) return true;
+	for (int i = 0; i < this->adjList[u1].size(); ++i) {
+		int u = this->adjList[u1][i].first;
+		if (u != v && !visited[u])
+			if (this->mDFS(u, u2, v, visited, ans))
+				return true;
+	}
+	ans.erase(ans.end() - 1);
+	return false;
+}
+
+vector<int> Graph::findPath(int u1, int u2, int v) {
+	if (this->vertexs.find(u1) == this->vertexs.end() ||
+		this->vertexs.find(u2) == this->vertexs.end() ||
+		this->vertexs.find(v) == this->vertexs.end())
+		throw OperationErr("there is no such vertex(s)");
+	bool* visited = new bool[this->vertexs.size()];
+	vector<int> path;
+	for (int i = 0; i < this->vertexs.size(); ++i) visited[i] = false;
+	if (mDFS(u1, u2, v, visited, path)) return path;
+	else throw OperationErr("there is no shuch way");
+}
+

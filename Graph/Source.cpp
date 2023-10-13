@@ -60,9 +60,11 @@ int main() {
             << "7 - read graph from file\n" << "8 - print graph into file\n"
             << "9 - get info about graph\n" << "10 - give amount of coming edges (task4)\n"
             << "11 - give list of coming edges (task11)\n"
-            << "12 - get complete graph based on g (task1)\n";
+            << "12 - get complete graph based on g (task1)\n" 
+            << "13 - way from u1 to u2, not passing throught v (task 8)\n";
         cin >> action;
-        int fir, sec, weight;
+        int fir, sec, third, weight;
+        vector<int> v;
         try {
             switch (action) {
             case 1:
@@ -137,7 +139,9 @@ int main() {
                 // 11 - give list of coming edges
                 cout << "Enter the name of vertex (int): ";
                 cin >> fir;
-                printVector(g.getVertexStepIn(fir));
+                v = g.getVertexStepIn(fir);
+                if (v.size()) printVector(v);
+                else cout << "\nNo coming edges\n";
                 break;
             case 12:
                 // 12 - complete graph
@@ -148,6 +152,14 @@ int main() {
                 }
                 else
                     printAdjList(g.makeCompleteGraph());
+                break;
+            case 13:
+                // 13 - Найти путь, соединяющий вершины u1 и u2 и не проходящий через вершину v.
+                cout << "Enter the names of vertexs u1, u2: ";
+                cin >> fir >> sec;
+                cout << "Enter name of vertex v: ";
+                cin >> third;
+                printVector(g.findPath(fir, sec, third));
                 break;
             default:
                 cout << "\nHave no operation with such name\n";

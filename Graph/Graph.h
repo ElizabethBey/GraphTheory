@@ -173,6 +173,8 @@ public:
 	vector<int> getVertexStepIn(int v); // дает список «заходящих» соседних вершин
 	Graph makeCompleteGraph(); // полный граф на основе данного невзвешенного графа
 	Graph makeCompleteGraph(int w); // полный граф на основе данного взвешенного графа
+	bool mDFS(int u1, int u2, int v, bool* visited, vector<int>& ans); // рукурсивная фунция для обхода в глубину
+	vector<int> findPath(int u1, int u2, int v); // список обхода в глубину
 
 private:
 	bool directed;
