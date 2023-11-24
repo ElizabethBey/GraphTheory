@@ -1,12 +1,12 @@
 ﻿  Graph.cpp
-C:\Users\User\Desktop\homework3course\graphsTheory\Graph\Graph\Graph.cpp(12,21): warning C4018: <: несоответствие типов со знаком и без знака
-C:\Users\User\Desktop\homework3course\graphsTheory\Graph\Graph\Graph.cpp(132,21): warning C4018: <: несоответствие типов со знаком и без знака
-C:\Users\User\Desktop\homework3course\graphsTheory\Graph\Graph\Graph.cpp(150,22): warning C4018: <: несоответствие типов со знаком и без знака
-C:\Users\User\Desktop\homework3course\graphsTheory\Graph\Graph\Graph.cpp(169,23): warning C4018: <: несоответствие типов со знаком и без знака
-C:\Users\User\Desktop\homework3course\graphsTheory\Graph\Graph\Graph.cpp(222,20): warning C4018: <: несоответствие типов со знаком и без знака
+C:\Users\User\Desktop\homework3course\graphsTheory\Graph\Graph\Graph.cpp(13,21): warning C4018: <: несоответствие типов со знаком и без знака
+C:\Users\User\Desktop\homework3course\graphsTheory\Graph\Graph\Graph.cpp(133,21): warning C4018: <: несоответствие типов со знаком и без знака
+C:\Users\User\Desktop\homework3course\graphsTheory\Graph\Graph\Graph.cpp(151,22): warning C4018: <: несоответствие типов со знаком и без знака
+C:\Users\User\Desktop\homework3course\graphsTheory\Graph\Graph\Graph.cpp(170,23): warning C4018: <: несоответствие типов со знаком и без знака
+C:\Users\User\Desktop\homework3course\graphsTheory\Graph\Graph\Graph.cpp(223,20): warning C4018: <: несоответствие типов со знаком и без знака
 C:\Users\User\Desktop\homework3course\graphsTheory\Graph\Graph\Graph.cpp(239,20): warning C4018: <: несоответствие типов со знаком и без знака
-  Source.cpp
-C:\Users\User\Desktop\homework3course\graphsTheory\Graph\Graph\Source.cpp(13,27): warning C4018: <: несоответствие типов со знаком и без знака
-C:\Users\User\Desktop\homework3course\graphsTheory\Graph\Graph\Source.cpp(35,23): warning C4018: <: несоответствие типов со знаком и без знака
-  Создание кода...
+C:\Users\User\Desktop\homework3course\graphsTheory\Graph\Graph\Graph.cpp(249,20): warning C4018: <: несоответствие типов со знаком и без знака
+C:\Users\User\Desktop\homework3course\graphsTheory\Graph\Graph\Graph.cpp(261,20): warning C4018: <: несоответствие типов со знаком и без знака
+C:\Users\User\Desktop\homework3course\graphsTheory\Graph\Graph\Graph.cpp(279,21): warning C4018: <: несоответствие типов со знаком и без знака
+C:\Users\User\Desktop\homework3course\graphsTheory\Graph\Graph\Graph.cpp(286,7): warning C4101: a1: неиспользованная локальная переменная
   Graph.vcxproj -> C:\Users\User\Desktop\homework3course\graphsTheory\Graph\Debug\Graph.exe

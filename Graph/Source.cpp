@@ -38,7 +38,7 @@ void printVector(vector<int> v) {
 }
 
 int main() {
-    string s = "somefile.txt";
+    string s = "16-1.txt";
     // cout << "Enter fileName: ";
     // cin >> s;
     Graph g;
@@ -61,7 +61,11 @@ int main() {
             << "9 - get info about graph\n" << "10 - give amount of coming edges (task4)\n"
             << "11 - give list of coming edges (task11)\n"
             << "12 - get complete graph based on g (task1)\n" 
-            << "13 - way from u1 to u2, not passing throught v (task 8)\n";
+            << "13 - way from u1 to u2, not passing throught v (task 8)\n"
+            << "14 - give the amount of strongly connected components of directed graph\n"
+            << "15 - get carcass\n"
+            << "16 - print lenghts of shortest ways from u to v1 and v2\n"
+            << "17 - find radius of the graph\n";
         cin >> action;
         int fir, sec, third, weight;
         vector<int> v;
@@ -160,6 +164,30 @@ int main() {
                 cout << "Enter name of vertex v: ";
                 cin >> third;
                 printVector(g.findPath(fir, sec, third));
+                break;
+            case 14:
+                // 14 - Подсчитать количество сильно связных компонент орграфа
+                cout << g.amountOfConnectedParts() << endl;
+                break;
+            case 15:
+                // 15 - найти каркас графа по алг Краскала
+                printAdjList(g.carcass());
+                break;
+            case 16:
+            {
+                // 16 - Вывести длины кратчайших путей от u до v1 и v2
+                cout << "Enter vertex u: ";
+                cin >> fir;
+                cout << "Enter vertexs v1, v2: ";
+                cin >> sec >> third;
+                pair<int, int> p = g.shortestWays(fir, sec, third);
+                cout << "shortest ways lenghts\n" << "u -> v1: " << p.first
+                    << "\nu -> v2: " << p.second << "\n";
+                break;
+            }
+            case 17:
+                // 17 - Найти радиус графа — минимальный из эксцентриситетов вершин
+                cout << g.getRadius() << "\n";
                 break;
             default:
                 cout << "\nHave no operation with such name\n";

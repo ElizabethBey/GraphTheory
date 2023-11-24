@@ -50,6 +50,9 @@ public:
 	bool operator==(const Edge& e) {
 		return (first == e.first && second == e.second && weight == e.weight && isWeighted == e.isWeighted);
 	}
+	bool operator<(const Edge& e) {
+		return (weight < e.weight && isWeighted == e.isWeighted);
+	}
 	bool isReverse(const Edge& e) {
 		return (first == e.second && second == e.first && weight == e.weight && isWeighted == e.isWeighted);
 	}
@@ -173,8 +176,14 @@ public:
 	vector<int> getVertexStepIn(int v); // дает список «заходящих» соседних вершин
 	Graph makeCompleteGraph(); // полный граф на основе данного невзвешенного графа
 	Graph makeCompleteGraph(int w); // полный граф на основе данного взвешенного графа
-	bool mDFS(int u1, int u2, int v, bool* visited, vector<int>& ans); // рукурсивная фунция для обхода в глубину
+	bool findPathDFS(int u1, int u2, int v, bool* visited, vector<int>& ans); // рукурсивная фунция для обхода в глубину
 	vector<int> findPath(int u1, int u2, int v); // список обхода в глубину
+	void invDFS(int u1, bool*& visited, int shift, vector<int>& ans); // DFS для поиска сильно связных комп орграфа
+	void componentDFS(int u1, int*& comp, int k, int shift); // DFS для поиска сильно связныы комп орграфа
+	int amountOfConnectedParts(); // подсчет количества сильно связных компонент орграфа
+	Graph carcass(); // каркас неориентированного взвешенного графа
+	pair<int, int> shortestWays(int u, int v1, int v2); // находит длину кратчайшего пути от u до v1 и v2
+	int getRadius(); // радиус графа
 
 private:
 	bool directed;
