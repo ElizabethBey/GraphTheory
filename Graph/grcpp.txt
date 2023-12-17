@@ -1,5 +1,4 @@
 #include <algorithm>
-#include <stack>
 #include "Graph.h"
 
 map<int, vector<pair<int, int>>> Graph::getAdjList() {
@@ -335,7 +334,33 @@ Graph Graph::carcass() {
 	return makeOnEdgeList(ans, false, true);
 }
 
-void Deikstra(Graph& g, bool*& visited, vector<int>& dist, int vInd, int shift) {
+pair<int, int> Graph::shortestWays(int u, int v1, int v2) {
+	if (!this->weighted) throw OperationErr("Graph has to be weighted");
+	// алг Форда-Беллмана
+	int n = this->vertexs.size();
+	vector<int> dist(n);
+	for (int i = 0; i < n; ++i) {
+		dist[i] = 10000;
+	}
+	int shift = *this->vertexs.begin();
+	int vMinInd = u - shift;
+	dist[vMinInd] = 0;
+	vector<Edge> edges = this->getEdgeList();
+	for (int i = 1; i < n; ++i)
+		for (auto e : edges) {
+			int u = e.first - shift; int v = e.second - shift;
+			int w = e.weight;
+			if (dist[v] > dist[u] + w)
+				dist[v] = dist[u] + w;
+		}
+
+	pair<int, int> p = make_pair(dist[v1 - shift], dist[v2 - shift]);
+	if (p.first == 10000) throw OperationErr("no way from u to v1");
+	if (p.second == 10000) throw OperationErr("no way from u to v2");
+	return p;
+}
+
+void Deikstra(Graph& g, bool*& visited, int*& dist, int vInd, int shift) {
 	map<int, vector<pair<int, int>>> adj = g.getAdjList();
 	for (auto l : adj[vInd + shift]) {
 		if (!visited[l.first - shift] && dist[l.first - shift] > l.second + dist[vInd])
@@ -344,99 +369,115 @@ void Deikstra(Graph& g, bool*& visited, vector<int>& dist, int vInd, int shift) 
 	visited[vInd] = true;
 }
 
-pair<int, int> Graph::shortestWays(int u, int v1, int v2) {
-	if (!this->weighted) throw OperationErr("Graph has to be weighted");
-	int n = this->vertexs.size();
-	//алг дейкстры
-	bool* visited = new bool[n];  vector<int> dist(n);
-	for (int i = 0; i < n; ++i) {
-		visited[i] = false;
-		dist[i] = 10000;
-	}
-	int shift = *this->vertexs.begin();
-	int vMinInd = u - shift;
-	dist[vMinInd] = 0;
-	while (true) {
-		Deikstra(*this, visited, dist, vMinInd, shift);
-		int vMinOld = vMinInd;
-		for (int i = 0; i < n; ++i)
-			if (!visited[i]) vMinInd = i;
-		if (vMinInd == vMinOld) break;
-		for (int i = 0; i < n; ++i)
-			if (!visited[i] && dist[i] < dist[vMinInd])
-				vMinInd = i;
-	}
-	
-	pair<int, int> p = make_pair(dist[v1 - shift], dist[v2 - shift]);
-	if (p.first == 10000) throw OperationErr("no way from u to v1");
-	if (p.second == 10000) throw OperationErr("no way from u to v2");
-	return p;
-}
-
 int Graph::getRadius() {	
 	if (this->directed) throw OperationErr("Graph has to be undirected");
-
-	int n = this->vertexs.size();
 	Graph g(false, true);
 	set<int> vertexes;
-	vector<Edge> thisEdges = this->getEdgeList();
-	for (auto e : thisEdges) {
+	vector<Edge> edges = this->getEdgeList();
+	for (auto e : edges) {
 		vertexes.insert(e.first);
 		vertexes.insert(e.second);
 	}
 	for (int v : vertexes) g.addVertex(v);
-	for (auto e : thisEdges) g.addEdge(e.first, e.second, 1);
+	for (auto e : edges) g.addEdge(e.first, e.second, 1);
 
-	//алгоритм Флойда Уоршелла
-	vector<vector<int>> dist(n);
-	for (int i = 0; i < n; ++i) {
-		dist[i].resize(n);
-		for (int j = 0; j < n; j++)
-			dist[i][j] = 10000;
-	}
-	int shift = *this->vertexs.begin();
-	vector<Edge> edges = g.getEdgeList();
-	for (auto e : edges) {
-		int fir = e.first - shift, sec = e.second - shift;
-		dist[fir][sec] = e.weight;
-		if (!this->directed)
-			dist[sec][fir] = e.weight;
-	}
-
-	for (int i = 0; i < n; ++i)
-		dist[i][i] = 0;
-	for (int k = 0; k < n; ++k)
-		for (int i = 0; i < n; i++)
-			for (int j = 0; j < n; ++j)
-				if (dist[i][j] > dist[i][k] + dist[k][j])
-					dist[i][j] = dist[i][k] + dist[k][j];
-
+	int n = vertexes.size();
 	vector<int> exentr(n);
-	for (int j = 0; j < n; ++j)
-		exentr[j] = *max_element(dist[j].begin(), dist[j].end());
+	for (int u : vertexes) {
+		// алг Дейкстры
+		bool* visited = new bool[n]; int* dist = new int[n];
+		for (int i = 0; i < n; ++i) {
+			visited[i] = false;
+			dist[i] = 10000;
+		}
+		int shift = *vertexes.begin();
+		int vMinInd = u - shift;
+		dist[vMinInd] = 0;
+		while (true) {
+			Deikstra(g, visited, dist, vMinInd, shift);
+			int vMinOld = vMinInd;
+			for (int i = 0; i < n; ++i)
+				if (!visited[i]) vMinInd = i;
+			if (vMinInd == vMinOld) break;
+			for (int i = 0; i < n; ++i)
+				if (!visited[i] && dist[i] < dist[vMinInd])
+					vMinInd = i;
+		}
+		vector<int> notMaxIntDist;
+		for (int i = 0; i < n; ++i)
+			if (dist[i] != 10000) notMaxIntDist.push_back(dist[i]);
+		if (notMaxIntDist.empty())
+			exentr[u - shift] = 0;
+		else
+			exentr[u - shift] = *max_element(notMaxIntDist.begin(), notMaxIntDist.end());
+	}
 	return *min_element(exentr.begin(), exentr.end());
 }
 
-void Graph::deeper (vector<int>& way, int u, int v, int tmpSum, vector<vector<int>> &ans) {
-	for (auto el : this->adjList[u]) {
+void deeper(Graph& g, vector<vector<int>>& dist, int u, int v, 
+		vector<int>& way, vector<bool>& visited, vector<vector<int>> &ans) {
+	map<int, vector<pair<int, int>>> adj = g.getAdjList();
+	visited[u] = true;
+	int sum = dist[u][v];
+	for (auto el : adj[u]) {
 		int w = el.second;
 		int vi = el.first;
-		if (find(way.begin(), way.end(), vi) == way.end()) {
-			tmpSum -= w;
-			if (vi == v && tmpSum == 0) {
-				way.push_back(vi);
+		if (sum == w + dist[vi][v] && !visited[vi]) {
+			if (vi == v) {
+				way.push_back(v);
 				ans.push_back(way);
 				way.erase(way.end() - 1);
+				break;
 			}
-			else if (tmpSum > 0) {
+			else {
 				way.push_back(vi);
-				deeper(way, vi, v, tmpSum, ans);
+				deeper(g, dist, vi, v, way, visited, ans);
 				way.erase(way.end() - 1);
 			}
-			tmpSum += w;
 		}
 	}
+	visited[u] = false;
 }
+
+vector<vector<int>> Graph::kShortestWays(int u, int v, int k) {
+	if (!this->weighted) throw OperationErr("Graph has to be weighted");
+	int n = this->vertexs.size();
+	vector<vector<int>> dist(n);
+	for (int i = 0; i < n; ++i) {
+		dist[i].resize(n);
+		for (int j = 0; j < n; j++) {
+			dist[i][j] = 10000;
+		}
+	}
+	vector<Edge> edges = this->getEdgeList();
+	for (auto e : edges) {
+		dist[e.first][e.second] = e.weight;
+		if (!this->directed)
+			dist[e.second][e.first] = e.weight;
+	}
+	
+	for (int i = 0; i < n; ++i) {
+		dist[i][i] = 0;
+	}
+	for (int k = 0; k < n; ++k)
+		for(int i = 0; i < n; i++)
+			for (int j = 0; j < n; ++j) {
+				if (dist[i][j] > dist[i][k] + dist[k][j])
+					dist[i][j] = dist[i][k] + dist[k][j];
+			}
+	vector<vector<int>> ans;
+	vector<bool> visited(n, false);
+	vector<int> way;
+	way.push_back(u);
+	deeper(*this, dist, u, v, way, visited, ans);
+	vector<vector<int>> ans1;
+	if (k < ans.size())
+		for (int i = 0; i < k; ++i) 
+			ans1.push_back(ans[i]);
+	else ans1 = ans;
+	return ans1;
+}
+
 
 vector<vector<int>> Graph::kShortestWays(int u, int v, int k) {
 	if (!this->weighted) throw OperationErr("Graph has to be weighted");
@@ -451,7 +492,7 @@ vector<vector<int>> Graph::kShortestWays(int u, int v, int k) {
 			dist[i][j] = 10000;
 	}
 	
-	// алг Форда-Беллмана
+	// алг Форда-Беллмана добавить проверку на отрицательный цикл
 	int shift = *this->vertexs.begin();
 	dist[u - shift][0] = 0;
 	vector<Edge> edges = this->getEdgeList();
@@ -459,12 +500,12 @@ vector<vector<int>> Graph::kShortestWays(int u, int v, int k) {
 		for (auto e : edges) {
 			int u = e.first - shift; int v = e.second - shift;
 			int w = e.weight;
-			if (dist[i][v] > dist[i - 1][u] + w)
+			if (dist[i][v] > dist[i - 1][u] + w) {
+				//if (i == n) throw OperationErr("Graph has negative loop");
+				//else 
 					dist[i][v] = dist[i - 1][u] + w;
+			}
 		}
-	for (int i = 0; i < n; i++)
-		if (dist[n - 1][i] < dist[n - 2][i])
-			throw OperationErr("Graph has negative loop");
 	int vInd = v - shift;
 	int sum = 10000;
 	for (int i = 0; i < n; ++i)
@@ -483,3 +524,29 @@ vector<vector<int>> Graph::kShortestWays(int u, int v, int k) {
 	for (int i = 0; i < k; i++) ansk.push_back(ans[i]);
 	return ansk;
 }
+
+vector<int> seq;
+	stack<int> way; way.push(u);
+	stack<int> s; s.push(sum);
+
+	while (!way.empty()) {
+		int t = way.top();
+		int tInd = t - shift;
+		if (visited[tInd] == 2) {
+			visited[tInd] = 1;
+			vector<pair<int, int>> r = a[t];
+			reverse(r.begin(), r.end());
+			for (auto el : r) {
+				int w = el.second;
+				int vi = el.first;
+				if (visited[vi - shift] == 2)
+					way.push(vi);
+			}
+		}
+		else if (visited[tInd] == 1) {
+			visited[tInd] = 0;
+			way.pop();
+			seq.push_back(t);
+		}
+		else way.pop();
+	}

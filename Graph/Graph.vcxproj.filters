@@ -27,4 +27,7 @@
       <Filter>Исходные файлы</Filter>
     </ClCompile>
   </ItemGroup>
+  <ItemGroup>
+    <Text Include="grcpp.txt" />
+  </ItemGroup>
 </Project>

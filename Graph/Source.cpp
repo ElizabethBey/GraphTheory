@@ -38,7 +38,7 @@ void printVector(vector<int> v) {
 }
 
 int main() {
-    string s = "16-1.txt";
+    string s = "18-2.txt";
     // cout << "Enter fileName: ";
     // cin >> s;
     Graph g;
@@ -65,7 +65,8 @@ int main() {
             << "14 - give the amount of strongly connected components of directed graph\n"
             << "15 - get carcass\n"
             << "16 - print lenghts of shortest ways from u to v1 and v2\n"
-            << "17 - find radius of the graph\n";
+            << "17 - find radius of the graph\n"
+            << "18 - find k shortest ways from u to v\n";
         cin >> action;
         int fir, sec, third, weight;
         vector<int> v;
@@ -189,6 +190,18 @@ int main() {
                 // 17 - Найти радиус графа — минимальный из эксцентриситетов вершин
                 cout << g.getRadius() << "\n";
                 break;
+            case 18: {
+                // 18 - Найти k кратчайших путей между вершинами u и v
+                cout << "Enter vertexes u, v: ";
+                cin >> fir >> sec;
+                cout << "Enter k: ";
+                cin >> third;
+                vector<vector<int>> v = g.kShortestWays(fir, sec, third);
+                for (int j = 0; j < v.size(); ++j, cout << endl)
+                    for (int i = 0; i < v[j].size(); ++i)
+                        cout << v[j][i] << " ";
+                break;
+            }
             default:
                 cout << "\nHave no operation with such name\n";
                 break;
