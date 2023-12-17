@@ -38,7 +38,7 @@ void printVector(vector<int> v) {
 }
 
 int main() {
-    string s = "18-2.txt";
+    string s = "18-3.txt";
     // cout << "Enter fileName: ";
     // cin >> s;
     Graph g;

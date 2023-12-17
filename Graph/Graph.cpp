@@ -444,31 +444,33 @@ vector<vector<int>> Graph::kShortestWays(int u, int v, int k) {
 
 	int n = this->vertexs.size();
 	int n1 = n + 1;
-	vector<vector<int>> dist(n1);
-	for (int i = 0; i < n1; ++i) {
-		dist[i].resize(n);
-		for (int j = 0; j < n; j++)
-			dist[i][j] = 10000;
-	}
+	vector<int> dist(n, 10000);
 	
 	// алг Форда-Беллмана
 	int shift = *this->vertexs.begin();
-	dist[u - shift][0] = 0;
+	dist[u - shift] = 0;
 	vector<Edge> edges = this->getEdgeList();
-	for (int i = 1; i < n1; ++i)
+	for (int i = 1; i <= n - 1; ++i)
 		for (auto e : edges) {
 			int u = e.first - shift; int v = e.second - shift;
 			int w = e.weight;
-			if (dist[i][v] > dist[i - 1][u] + w)
-					dist[i][v] = dist[i - 1][u] + w;
+			if (dist[u] != 10000 && dist[v] > dist[u] + w)
+				dist[v] = dist[u] + w;
 		}
-	for (int i = 0; i < n; i++)
-		if (dist[n - 1][i] < dist[n - 2][i])
+	for (auto e : edges) {
+		int u = e.first - shift; int v = e.second - shift;
+		int w = e.weight;
+		if (dist[u] != 10000 && dist[v] > dist[u] + w)
 			throw OperationErr("Graph has negative loop");
+	}
+	/*for (int i = 0; i < n; i++)
+		if (dist[i] < dist[i])
+			throw OperationErr("Graph has negative loop");
+		*/
 	int vInd = v - shift;
 	int sum = 10000;
-	for (int i = 0; i < n; ++i)
-		if (dist[i][vInd] < sum) sum = dist[i][vInd];
+	for (int i = 1; i < n; ++i)
+		if (dist[vInd] < sum) sum = dist[vInd];
 	if (sum == 10000) throw OperationErr("no way from u to v");
 
 	vector<vector<int>> ans;

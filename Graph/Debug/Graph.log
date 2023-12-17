@@ -8,5 +8,5 @@ C:\Users\User\Desktop\homework3course\graphsTheory\Graph\Graph\Graph.cpp(240,20)
 C:\Users\User\Desktop\homework3course\graphsTheory\Graph\Graph\Graph.cpp(250,20): warning C4018: <: несоответствие типов со знаком и без знака
 C:\Users\User\Desktop\homework3course\graphsTheory\Graph\Graph\Graph.cpp(262,20): warning C4018: <: несоответствие типов со знаком и без знака
 C:\Users\User\Desktop\homework3course\graphsTheory\Graph\Graph\Graph.cpp(280,21): warning C4018: <: несоответствие типов со знаком и без знака
-C:\Users\User\Desktop\homework3course\graphsTheory\Graph\Graph\Graph.cpp(480,8): warning C4018: >: несоответствие типов со знаком и без знака
+C:\Users\User\Desktop\homework3course\graphsTheory\Graph\Graph\Graph.cpp(482,8): warning C4018: >: несоответствие типов со знаком и без знака
   Graph.vcxproj -> C:\Users\User\Desktop\homework3course\graphsTheory\Graph\Debug\Graph.exe
