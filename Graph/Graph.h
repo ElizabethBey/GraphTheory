@@ -182,12 +182,14 @@ public:
 	pair<int, int> shortestWays(int u, int v1, int v2); // находит длину кратчайшего пути от u до v1 и v2
 	int getRadius(); // радиус графа
 	vector<vector<int>> kShortestWays(int u, int v, int k); // выводит k кратчайших путей от u до v
+	int maxFlow(int s, int t);
 
 private:
 	void componentDFS(int u1, int*& comp, int k, int shift); // DFS для поиска сильно связныы комп орграфа
 	bool findPathDFS(int u1, int u2, int v, bool* visited, vector<int>& ans); // рекурсивная фунция для обхода в глубину
 	void invDFS(int u1, bool*& visited, int shift, vector<int>& ans); // DFS для поиска сильно связных комп орграфа
 	void deeper(vector<int>& way, int u, int v, int tmpSum, vector<vector<int>>& ans);
+	bool DFS(int u1, int u2, vector<bool>& visited, vector<int>& ans, int shift);
 
 	bool directed;
 	bool weighted;

@@ -346,6 +346,10 @@ void Deikstra(Graph& g, bool*& visited, vector<int>& dist, int vInd, int shift) 
 
 pair<int, int> Graph::shortestWays(int u, int v1, int v2) {
 	if (!this->weighted) throw OperationErr("Graph has to be weighted");
+	if (this->vertexs.find(u) == this->vertexs.end() 
+		|| this->vertexs.find(v1) == this->vertexs.end()
+		|| this->vertexs.find(v2) == this->vertexs.end())
+		throw OperationErr("u, v1 or v2 do no exist in graph");
 	int n = this->vertexs.size();
 	//алг дейкстры
 	bool* visited = new bool[n];  vector<int> dist(n);
@@ -441,7 +445,9 @@ void Graph::deeper (vector<int>& way, int u, int v, int tmpSum, vector<vector<in
 vector<vector<int>> Graph::kShortestWays(int u, int v, int k) {
 	if (!this->weighted) throw OperationErr("Graph has to be weighted");
 	if (!this->directed) throw OperationErr("Graph has to be directed");
-
+	if (this->vertexs.find(u) == this->vertexs.end()
+		|| this->vertexs.find(v) == this->vertexs.end())
+		throw OperationErr("u or v do no exist in graph");
 	int n = this->vertexs.size();
 	int n1 = n + 1;
 	vector<int> dist(n, 10000);
@@ -463,10 +469,6 @@ vector<vector<int>> Graph::kShortestWays(int u, int v, int k) {
 		if (dist[u] != 10000 && dist[v] > dist[u] + w)
 			throw OperationErr("Graph has negative loop");
 	}
-	/*for (int i = 0; i < n; i++)
-		if (dist[i] < dist[i])
-			throw OperationErr("Graph has negative loop");
-		*/
 	int vInd = v - shift;
 	int sum = 10000;
 	for (int i = 1; i < n; ++i)
@@ -484,4 +486,88 @@ vector<vector<int>> Graph::kShortestWays(int u, int v, int k) {
 	vector<vector<int>> ansk;
 	for (int i = 0; i < k; i++) ansk.push_back(ans[i]);
 	return ansk;
+}
+
+bool Graph::DFS(int u1, int u2, vector<bool>& visited, vector<int>& ans, int shift) {
+	visited[u1 - shift] = true;
+	ans.push_back(u1);
+	if (u1 == u2) return true;
+	for (int i = 0; i < this->adjList[u1].size(); ++i) {
+		int u = this->adjList[u1][i].first;
+		if (!visited[u - shift])
+			if (this->DFS(u, u2, visited, ans, shift))
+				return true;
+	}
+	ans.erase(ans.end() - 1);
+	return false;
+}
+
+int Graph::maxFlow(int s, int t) {
+	if (!this->weighted) throw OperationErr("Graph has to be weighted");
+	if (!this->directed) throw OperationErr("Graph has to be directed");
+	if (this->vertexs.find(s) == this->vertexs.end()
+		|| this->vertexs.find(t) == this->vertexs.end())
+		throw OperationErr("u or v do no exist in graph");
+
+	int n = this->vertexs.size();
+	Graph g = *this;
+	int shift = *this->vertexs.begin();
+	//найти путь
+	vector<int> way; vector<Edge> edges;
+	vector<bool> visited(n, false);
+	int maxFlow = 0;
+	while (g.DFS(s, t, visited, way, shift)) {
+		int min = 0;
+		map<int, vector<pair<int, int>>> adj = g.getAdjList();
+		for (int i = 1; i < way.size(); i++) {
+			for (auto el : adj[way[i - 1]]) {
+				int fir = el.first;
+				if (fir == way[i]) 
+					edges.push_back(Edge(way[i - 1], fir, el.second, true));
+			}
+		}
+		// найдем мин пр сп ребра
+		for (auto el : edges) {
+			int fir = el.first;
+			if (fir == way[1]) min = el.weight;
+		}
+		for (int i = 1; i < way.size(); ++i) {
+			int v = way[i];
+			for (auto el : edges)
+				if (el.first == v && min > el.weight) {
+					min = el.weight;
+					break;
+				}
+		}
+		// корректируем сеть
+		for (auto el : edges) {
+			int r = el.weight - min;
+			if (r == 0) {
+				g.deleteEdge(el.first, el.second, el.weight);
+				bool haveAlreadyHad = false;
+				for (auto e : adj[el.second]) {
+					if (e.first == el.first) {
+						int w = e.second;
+						int u = e.first, v = el.second;
+						g.deleteEdge(v, u, w);
+						g.addEdge(v, u, w + el.weight);
+						haveAlreadyHad = true;
+						break;
+					}
+				}
+				if (!haveAlreadyHad) g.addEdge(el.second, el.first, el.weight);
+			}
+			else {
+				g.deleteEdge(el.first, el.second, el.weight);
+				g.addEdge(el.first, el.second, r);
+				g.addEdge(el.second, el.first, min);
+			}
+		}
+		maxFlow += min;
+		way.clear();
+		edges.clear();
+		for (int i = 0; i < visited.size(); i++)
+			visited[i] = false;
+	}
+	return maxFlow;
 }

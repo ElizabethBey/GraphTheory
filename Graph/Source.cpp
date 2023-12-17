@@ -38,7 +38,7 @@ void printVector(vector<int> v) {
 }
 
 int main() {
-    string s = "18-3.txt";
+    string s = "19-1.txt";
     // cout << "Enter fileName: ";
     // cin >> s;
     Graph g;
@@ -60,13 +60,14 @@ int main() {
             << "7 - read graph from file\n" << "8 - print graph into file\n"
             << "9 - get info about graph\n" << "10 - give amount of coming edges (task4)\n"
             << "11 - give list of coming edges (task11)\n"
-            << "12 - get complete graph based on g (task1)\n" 
+            << "12 - get complete graph based on g (task1)\n"
             << "13 - way from u1 to u2, not passing throught v (task 8)\n"
             << "14 - give the amount of strongly connected components of directed graph\n"
             << "15 - get carcass\n"
             << "16 - print lenghts of shortest ways from u to v1 and v2\n"
             << "17 - find radius of the graph\n"
-            << "18 - find k shortest ways from u to v\n";
+            << "18 - find k shortest ways from u to v\n"
+            << "19 - find max flow from s to t\n";
         cin >> action;
         int fir, sec, third, weight;
         vector<int> v;
@@ -200,6 +201,13 @@ int main() {
                 for (int j = 0; j < v.size(); ++j, cout << endl)
                     for (int i = 0; i < v[j].size(); ++i)
                         cout << v[j][i] << " ";
+                break;
+            }
+            case 19: {
+                // 19 - Найти максимальный поток
+                cout << "Enter vertexes s, t: ";
+                cin >> fir >> sec;
+                cout << "max flow from s to t: " << g.maxFlow(fir, sec) << endl;
                 break;
             }
             default:
